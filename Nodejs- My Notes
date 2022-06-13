@@ -690,6 +690,23 @@ While using async/await, we dont have catch method. The way we get error is usin
 
 MongoDB
 
+sudo apt install -y mongodb
+sudo systemctl status mongodb
+
+//start mongodb
+sudo systemctl start mongodb
+
+//verify mongodb has started
+sudo systemctl status mongodb
+
+// we can optionally ensure that MongoDB will start following a system reboot by issuing following command:
+sudo systemctl enable mongodb
+
+// stop mongodb
+sudo systemctl stop mongodb
+
+
+
 install mongodb and mongodb compass,
 
 then install mongoose
@@ -813,6 +830,8 @@ contains Manish anywhere
 
 We use this method to find number of documents:
 .count()
+
+The sort and skip options can also be specified as methods chained to the find method.
 
 
 
