@@ -1,0 +1,848 @@
+
+Node.js: The Complete Guide to Build RESTful APIs
+
+Runtime env for executing JavaSceipt code (similar to browser)
+used to build back end generall called APIs
+
+highly scalable, data intensive, real time apps
+
+great for prototyping and agile development
+
+Node: non-blocking nature or asynchronous nature
+
+node is asynchronous by default, opposite to ASP.NET (need to do extra work to make asp.net asynchronous)
+
+Single thread for many requests,  so node is ideal for I/O intensive apps - apps which need alot of disk or network access
+
+Node should not be used for CPU-intensive apps such as video encoding or image manipulation service because we know it works on single thread. CPU intensive requests need calculations which will lead to alot of waiting.
+
+
+GLOBAL OBJECTS
+
+console.log()
+
+setTimeout()
+used to call a function after a delay such as 1s, 2s as per required
+can be used inside of browser, inside of node, on the client
+clearTimeout()
+
+setInterval()
+used to repeatedly call a function after a given delay
+clearInterval()
+
+var message = '';
+
+we dont have window object in node
+instead we have global object
+
+eg global.console.log(), global.setTimeout()
+
+these are not another global such as this message which was var is only available in file where it was defined
+
+do not define function in global scope, because if function is defined with same name in other file it will overwrite
+
+instead use MODULARITY
+
+every file is considered as module in nodejs
+in OOP we can say the functions defined in a module will be private. They are not avilable outside that module/container.
+
+to use it outside module, we need to explicitly export it and make it public
+we have one main module
+
+eg 
+module.exports.endPoint = url;
+where url is internal fn or variable, endPoint is exported as url. it can be any name
+
+variables defined in a module are scope to that module
+
+Loading a module
+
+we need require() function
+we have this fn in node, we dont have this in browsers
+
+jshint can be used to find errors such as
+jshint app.js
+
+if we want to export function simply and not object, we could have used
+module.exports = log
+
+There is a MODULE WRAPPER FUNCTION for each module which consists of whole code
+
+we can go to nodejs docs for seeing latest nodejs apis, loading module, module wrapper function, path module, os module, file system module, events module etc
+
+
+EVENT
+signal that something has happend in our application
+
+class called HTTP: used to build web-server
+
+CLASS:
+container for properties and functions which we call methods.
+
+
+Metaphor:
+class = human
+object = john
+
+class defines the properties and behaviour of the concept
+object is an actual instance of class
+
+emitter.emit()
+emit= making a noise, produce- signalling that something has happend
+
+
+there is emitter and listener, which work together
+
+When a function is inside a class, we dont call it a function,
+We call it a method inside a class
+
+Extending Event emitter
+
+make a class that extends EventEmitter
+inside class do this.emit for raising an event
+
+HTTP Module
+
+for pushing anything on localhost using http module simply
+
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+    if (req.url == '/') {
+        res.write('Hello Manish');
+        res.end();
+    }
+});
+
+// server.on('connection', (socket) => {
+//     console.log('New connection...');
+// });
+
+server.listen(3000);
+
+console.log('Listening on port 3000...');
+
+
+
+EXPRESS
+
+express framework is built on top of the http module in node
+
+
+Node Package Manager(NPM)
+
+npm -v
+
+=====
+Package.json
+
+npm init, then add required fields for your json
+
+
+Before adding any node packages to your application you need to create a package.json file using above command
+
+This should be your first step to start a node project
+
+npm init --yes
+for making a json file using all the default values
+
+====
+
+Adding third party package or library to node application
+
+use npmjs.com to use any node package before use
+
+eg underscore
+
+===
+
+require() function,
+when passed first it assumes it is a core module such as http module etc
+or it assumes to be a file or folder
+or it assumes it to be in folder node_modules
+
+
+===
+
+underscorejs.org is own website of underscore, it contains many utility functions
+eg contains
+Contains is used to find the value from array if its true or not
+
+===
+
+for mongoose 
+npm i mongoose
+it also installs many other dependencies
+
+===
+
+
+All the packages are written in package.json
+when you run node application of someone else, check package.json for dependencies, install them and then move forward
+
+or you can just use npm -i
+all the required dependencies will be installed automatically
+
+====
+
+Semantic Versioning (SemVer)
+
+version of any package or anything such as 8.5.3
+i.e.
+Major.Minor.Patch
+
+Patch version or Patch release is used for bug fixes
+Minor version adding new feature without breaking the existing APi
+If they new feature that can essentially break the existing application that depend upon current version - then the major version is increased
+
+
+^ symbol tells that we are interested in the major version if version we were using was ^4.3.2, here we are interested in 4 only
+
+~ symbol tells that we are interested in the major and minor version, if vour version was ~4.3.2, we would be interested in 4.3
+
+Better to use exact same version of dependency while using old projects
+
+===
+
+to see list of dependencies and libraries used, and their version use 
+npm list
+
+npm list --depth=2
+we can change depth according to the need
+
+
+npm view command to see details of specific lib, for mongoose we can use 
+npm view mongoose
+
+for seeing dependencies only, we can use
+npm view mongoose dependencies
+
+to see all the version names till now, we can use
+npm view mongoose versions
+
+====
+
+Installing a specific version of a package
+
+for mongoose v 2.4.2
+npm i mongoose@2.4.2
+
+====
+
+to see outdated packages use
+npm outdated
+
+for updating minor and patch releases use
+npm update
+
+for checking current dependencies are latest or not, use
+npm-check-updates
+you should install npm-check-updates globally before
+
+
+then running npm i, this will install new dependencies automatically
+
+=====
+
+
+uninstalling package
+
+eg
+npm uninstall mongoose
+npm un mongoose
+
+=====
+
+working with global packages
+
+npm -g outdated
+for our pc,
+sudo npm --location=global outdated
+
+similar for installing and uninstalling use i or un and --location=global
+
+===
+
+for publishing own npm package use
+npm publish
+
+for changes and updation,
+npm version major
+npm version minor
+then 
+npm publish
+
+=====
+
+Building RESTful APIs using Express
+
+RESTFUL services === RESTFUL APIs
+
+Client-Server Architecture used these days
+App= client or front end part
+talks to 
+Server/Back-end to get or save the data
+On server there are bunch of services accessible via http protocol
+The client can directly call the services using http request
+
+
+REST = Representational State Transfer
+
+data to be exchanged on secure channel use https
+
+endpoint = REST services 
+
+http methods
+GET for getting data
+POST for creating data
+PUT for updating data
+DELETE for deleting data
+
+
+We saw that when we make require('http'), there will be many if blocks in callback function of CreateServer,
+
+thatswhy we need a framework such as Express,
+
+framework gives our application a proper structure so that we can easily add many routes while keeping our application code maintainable.
+
+npm i express
+
+We dont use if blocks now,
+we define new routes by calling app.get
+we can make separate files for routes as well
+
+this way express gives skeleton or structure to our project
+
+we need to refresh page now and then so we use package nodemon,
+
+sudo npm i -g nodemon
+
+using Nodemon we dont need to refresh pages,
+now we can run file using nodemon command instead of nodejs
+
+===
+
+Environment variables for hosting Ports
+because usual ports like 3000 might not work in production environment
+
+env variable port can be changed in terminal, using eg
+export PORT=5000
+
+====
+
+Route parameters
+
+Parameters can be passed into the routes like,
+
+app.get('/api/courses/:id/:year', (req, res){
+    res.send(req.params);
+});
+
+here, id and year are parameters.
+
+----
+
+query string parameters (using question mark) to provide additional data for back-end services
+here we use req.query instead of req.params
+
+
+====
+
+Handling http get requests
+
+404= object not found on server
+eg
+
+app.get("/api/courses/:id", (req, res) => {
+  const course = courses.find((c) => c.id === parseInt(req.params.id));
+  if (!course) res.status(404).send("The course with given ID was not found");
+  res.send(course);
+});
+
+
+=====
+
+Always validate input never trust what client sends you.
+
+
+400 = Bad Request
+
+app.post('/api/courses', (req, res) => {
+
+    if (!req.body.name || req.body.name.length < 3){
+        //400 Bad Request
+        res.status(400).send('Name is required and should be minimum 3 characters');
+    }
+
+    const course = {
+        id: courses.length + 1,
+        name: req.body.name
+    };
+    courses.push(course);
+    res.send(course);
+});
+
+
+
+======
+
+view this code for read, update and create http requests
+
+
+const Joi = require('joi');
+const express = require("express");
+const app = express();
+
+app.use(express.json());
+
+const courses = [
+  { id: 1, name: "course1" },
+  { id: 1, name: "course2" },
+  { id: 1, name: "course3" },
+];
+
+app.get("/", (req, res) => {
+  res.send("Hello Manish Mahato");
+});
+// app.post()
+// app.put()
+// app.delete()
+app.get("/api/courses", (req, res) => {
+  res.send([1, 2, 3]);
+});
+
+app.get("/api/courses/:id", (req, res) => {
+  const course = courses.find((c) => c.id === parseInt(req.params.id));
+  if (!course) res.status(404).send("The course with given ID was not found");
+  res.send(course);
+});
+
+app.get("/api/posts/:year/:month", (req, res) => {
+  res.send(req.query);
+});
+
+
+app.post('/api/courses', (req, res) => {
+
+    const { error } = validateCourse(req.body); //result error
+    
+    if (error){
+        //400 Bad Request
+        res.status(400).send(result.error);
+        return;
+    }
+
+    // const schema = {
+    //     name: Joi.string().min(3).required()
+    // };
+
+    // const result = Joi.validate(req.body, schema);
+
+    // if (result.error){
+    //     //400 Bad Request
+    //     res.status(400).send(result.error);
+    //     return;
+    // }
+
+    const course = {
+        id: courses.length + 1,
+        name: req.body.name
+    };
+    courses.push(course);
+    res.send(course);
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening on port ${port}...`));
+
+app.put('/api/courses/:id', (req, res) => {
+    //Look up the course
+    //If not existing, return 404
+    const course = courses.find((c) => c.id === parseInt(req.params.id));
+    if (!course) res.status(404).send("The course with given ID was not found");
+
+    //const result = validateCourse(req.body);
+    const { error } = validateCourse(req.body); //result error
+    
+    if (error){
+        //400 Bad Request
+        res.status(400).send(result.error);
+        return;
+    }
+
+
+    //Update course
+    course.name = req.body.name;
+    //Return the updated course
+    res.send(course);
+});
+
+function validateCourse(course) {
+    //Validate
+    //If invalid, return 400 - Bad request
+    const schema = {
+        name: Joi.string().min(3).required()
+    };
+
+    return Joi.validate(course, schema);
+}
+
+
+
+=====
+
+
+Handling HTTP delete requests
+
+app.delete('/api/courses/:id', (req, res) => {
+    // Look up the course
+    // Not existing, return 404
+    const course = courses.find((c) => c.id === parseInt(req.params.id));
+    if (!course) res.status(404).send("The course with given ID was not found");
+    
+    // Delete
+    const index = courses.indexOf(course);
+    courses.splice(index, 1);
+
+    // Return the same course
+    res.send(course);
+
+
+});
+
+
+=====
+
+Middleware
+a function that takes the request object, either passes request to the client or passes to other middleware function.
+
+In express, every route handler function is technically a middleware function
+
+
+====
+
+Creating custom middleware function
+and third party middleware functions available
+
+====
+
+Environments
+
+you need to see what environment your code is running on
+
+Development Environment 
+Production Environment
+
+Process Object: global object in node that give access to current process
+
+====
+
+Configuration
+
+npm i congig
+installing the config package
+
+to change environment use,
+export NODE_ENV=production
+export NODE_ENV=development
+
+we make password for configuration in cmd
+then map in the custom-environment-variables.json
+
+====
+
+Debug package in node, no need to use console.log anymore 
+
+npm i debug
+
+
+const startupDebugger = require ('debug')('app:startup'); 
+const dbDebugger = require('debug')('app:db');
+
+ then in cmd, export DEBUG=app:startup,app:db
+
+then just use startupDebugger instead of console.log
+
+in cmd we can also use 
+export DEBUG=app:*
+
+
+we can also set this environment variable at the time of running our application. eg
+
+DEBUG=app.db nodemon index.js
+
+====
+
+Templating engines
+
+used to send html markup to the clients
+eg
+
+Pug
+Mustache
+EJS
+
+npm i pug
+
+=====
+
+
+Database Integration
+
+using mongodb,
+
+npm install mongodb
+
+there is another package mongoose which is built on top of mongo client
+
+=======
+
+Authentication
+
+first,
+all the routes should be put together which are of similar kind
+
+========
+
+Asynchronous Javascript
+
+synchronous = blocking,
+the program has to wait for upper lines to exexute for next line to execute
+
+asynchronous = non-blocking,
+
+setTimeout() is an example of asynchronous or non-blocking function.
+
+asynchronous doesn't mean multi thread or concurrent
+
+There are three patterns to deal with asynchronous code:
+callbacks
+promises
+async/await - kind of syntactic sugar with promises
+
+=====
+
+Callbacks
+
+calling a function when required, can be used inside asynchronous functions such as setTimeout()
+
+using asynchronous implementations, sometimes we end up using so many callbacks in callbacks which may lead to make CALLBACK HELL or Christmas Tree Problem.
+
+====
+
+Promise
+
+Promise is an object that holds the eventual result of an asynchronous operation.
+this is in 3 states:
+pending
+fulfilled
+rejected
+
+async operations such as acessing database, call web server.
+
+Promise has two methods,
+catch for catching any errors, 
+then for getting result of our asynchronous operation
+
+code eg
+
+const p = new Promise((resolve, reject) => {
+    // Kick off some async work
+
+    setTimeout(() => {
+        //resolve(1);
+        reject(new Error('message'));
+    }, 2000);
+
+    
+    
+});
+
+p
+    .then(result => console.log('Result', result))
+    .catch(err => console.log('Error', err.message));
+
+
+A promise is an object that holds the eventual result of an asynchronous operation , initially its in pending state when we create any promise.
+
+We can chain promises to implement complex asynchronous operation.
+
+When rejecting promises, always use an Error object.
+
+sometimes we want to kick off multiple asynchronous operations, but we want to do something as soon as one of these asynchronous operations completes. So we dont want all other operations to complete, just want to smth as soon as first operation completes. 
+then instead of Promise.all,  we use Promise.race
+
+
+======
+
+Async and Await
+
+also available in C#
+
+it helps to write asynchronous code just like synchronous code
+
+whenever we use the await operator inside of a function, you need to declarate that function with the async modifier. 
+
+While using async/await, we dont have catch method. The way we get error is using try-catch block. 
+
+
+=====
+
+MongoDB
+
+install mongodb and mongodb compass,
+
+then install mongoose
+
+we need to connect to mongodb server in code, with mongoose, use
+
+mongoose.connect('mongodb://localhost/egname')
+
+
+Analogy:
+
+collection= table
+document = row
+
+
+schema using mongodb and mongoose
+
+const courseSchema = new mongoose.Schema({
+    name: String,
+    author: String,
+    tags: [ String ]
+});
+
+
+Schema Types:
+String,
+Number,
+Date,
+Buffer (used to store binary data),
+Boolean,
+ObjectID,
+Array
+
+
+Classes, objects
+Course, nodeCourse
+
+MongoDB/ NoSQL is schemaless
+
+Making a mongodb document,
+
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/playground')
+    .then(() => console.log('Connected to MongoDB...'))
+    .catch(err => console.error('Could not connect to MongoDB...', err));
+
+const courseSchema = new mongoose.Schema({
+    name: String,
+    author: String,
+    tags: [ String ],
+    date: { type: Date, default: Date.now },
+    isPublished: Boolean
+});
+
+const Course = mongoose.model('Course', courseSchema);
+
+async function createCourse() {
+    const course = new Course({
+        name: 'React.js Course',
+        author: 'Manish',
+        tags: ['React', 'frontend'],
+        isPublished: true
+    });
+    
+    const result = await course.save();
+    console.log(result);
+}
+
+createCourse();
+
+
+
+
+======
+
+
+
+while getting the documents by using queries,
+
+for sort,
+.sort({name:1)
+
+here it will sort by name in ascending order, should use -1 if you want to sort in descending order
+
+we also have method select which we can use to get the properties which we want to return
+
+=======
+
+Comparison operators we have in MongoDB:
+eq = equal
+ne = not equal
+gt = greater than
+gte = greater than or equal to
+lt = less than
+lte = less than or equal to
+in
+nin = not in
+
+we use $  sign to indicate that it is an operator eg $gt
+
+logical operators:
+or
+and
+
+Query to find something starts with Manish
+ .find({ author: /^Manish/ })
+
+ends with Mahato
+        // .find({ author: /Mahato$/ })
+
+these queries will be case sensitive by default,
+for case insensitive use,
+
+.find({ author: /Mahato$/i })
+
+
+contains Manish anywhere
+.find({ author: /.*Manish.*/ })
+
+
+We use this method to find number of documents:
+.count()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
