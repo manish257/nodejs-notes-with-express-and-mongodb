@@ -835,18 +835,65 @@ The sort and skip options can also be specified as methods chained to the find m
 
 
 
+======
+
+Update query in Mongodb
+
+Approach1: Query first
+findById()
+Modify its properties
+save()
+
+Approach2: Update first
+Update directly
+Optionally: get the updated document
+
+There are many mongodb update operators available which can be used for updating any values.
 
 
 
+=====
+
+There are validators in mongoose which makes any variable must be,
+it is not applicable for mongodb.
+
+example: 
+name: { type: String, required: true }
+
+
+====
+
+Async validators,
+
+fist set isAsync: true
+then callback inside function, which is kept inside validator. eg
+
+tags: {
+        type: Array,
+        validate: {
+            isAsync: true,
+            validator: function(v, callback) {
+                setTimeout(() => {
+                    const result = v && v.length > 0;
+                    callback(result);
+                }, 1000 )
+                //Do some async work
+            },
+            message: 'A course should have at least one tag.'
+        }
+    },
 
 
 
+======
 
+properties available in mongoose while using strings
 
+lowercase: true
+uppercase: true
+trim: true
 
-
-
-
+ 
 
 
 
