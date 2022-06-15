@@ -1001,9 +1001,55 @@ Driver -> MongoDB
 Mongoose is an abstraction over mongoDB driver. 
 when we generate any new document, mongoose talks to mongoDB driver to generate a new ID. 
 
+====
+
+Authentication
+
+is the process of identifying if the user is they claim they are.
+
+Authorization is determining if the user has the right permission to perform the given operation.
+
+For registering any users we are using POST /api/users
+for LOGIN, we refer to this as request or command. We'll use POST here too
+eg POST /api/logins
 
 
+=====
 
+we can use joi-item complexity for validaiton of password properly
+
+===
+
+for hashing we use library bcrypt
+
+npm i bcrypt
+
+=====
+
+Arrow functions dont have their own 'this'.
+
+This in arrow function references to calling function.
+
+Typically we use arrow functions for standalone functions, 
+If we want to create a method that is a part of object- we should not use an arrow function.
+
+
+=====
+
+401 - Unauthorized
+
+we use unauthorized when a user tries to access a resource but they don't supply a valid json token. So we give them a chance to retry and resend a valid json token.
+
+If they send valid json web token and still they are not allowed to access the target resource, then we use Forbidden,
+
+403 - Forbidden
+
+=====
+
+Handling errors
+
+- sending a friendly error
+- log the exception
 
 
 
