@@ -1051,6 +1051,207 @@ Handling errors
 - sending a friendly error
 - log the exception
 
+=====
+
+Logging Errors
+
+Transport is essentially a storage device for our logs, 
+Winston (package used in logging errors) comes with few core transports:
+- Console
+- File
+- Http
+
+There are also plugins for winston -
+
+in 
+MongoDB
+CouchDB
+Redis
+Loggly
+
+
+
+=====
+
+For logging messages into mongoDB we can use new package
+npm i winston-mongodb
+
+======
+
+Standard logging levels:
+
+error
+warn
+info
+verbose
+debug
+silly
+
+=====
+
+Uncaught Exception
+
+Usually the process terminates if we dont catch exceptions due to some issues.
+ We can catch an exception using uncaughtException, eg
+
+process.on('uncaughtException', (ex) => {
+    console.log('WEGOT AN UNCAUGHT EXCEPTION');
+    winston.error(ex.message, ex);
+});
+
+
+Unhandled Promise rejections
+
+same as above, we can use unhandlesRejection to solve the issue of unhandles promises which were rejected. 
+
+we can make a log file using winston for unhandled promise rejections and uncaught exceptions.
+
+=====
+
+we can also change console.log with winston.info while using the localhost and port.
+
+====
+
+Automated Testing
+
+The practice of writing code to test our code, and then run those tests in an automated fashion.
+
+CODE
+- application code/ production code
+- test code
+
+
+With automated testing you write code and directly call this function with different inputs and verify that this function returns the right output.
+
+Now you can re run this code everytime you change this code or before commits
+
+Benefits of automated test:
+test your code frequently, in less time
+catch bug before deploying
+deploy with confidence
+
+It will reduce bugs that will go in production
+
+allow you to refactor your code with more confidence
+
+Refactoring means changing the structure of the code without changing its behaviour.
+
+testing helps to focus more on the quality of method we are writing 
+
+====
+Different types of test
+
+
+- Unit test
+Test a unit of an application WITHOUT its external dependencies such as files, databases, message queues, webs services. 
+Cheap to write
+Executes fast
+Dont give more confidence to you
+TESTS CLASS OR MULTIPLE CLASS WITHOUT EXTERNAL DEPENDENCY
+
+- Integration test
+tests class or components WITH its external dependencies. It tests integration of your application code with the dependencies like files, databases and so on
+take longer to execute
+give more confidence
+
+TESTS CLASS OR MULTIPLE CLASS WITH EXTERNAL DEPENDENCY
+
+
+- End to end test (E2E)
+Drives an application through its UI.
+Different tools for end to end test eg Selenium
+
+Gives greatest confidence
+Very Slow
+Very brittle 
+=====
+
+Test Pyramid
+
+
+            E2E
+        Integration
+    Unit Test-Unit Test
+
+==
+
+Favour unit tests to e2e tests
+Cover unit test gaps with integration tests
+Use end-to-end tests sparingly. Only for key functions of your application.
+
+====
+
+JavaScript testing frameworks
+
+Jasmine
+Mocha - used with plugin Chai and Sinon
+Jest- wrapper around jasmine
+
+In jest, we get everything we need in testing framework, I'll use Jest
+
+npm i jest --save-dev
+
+its a development dependency, we dont want to deploy jest to production environment
+
+in package.json,
+in scripts section, keep jest in test i.e
+'test': 'jest'
+
+Any file that ends with spec.js or test.js is treated as test file
+
+Naming convention:
+
+name_of_file_we_want_to_test.test.js
+or replace test with spec
+
+Use npm test in terminal to run the test i.e.
+
+npm test
+
+====
+
+the number of unit test you have for a given function should be greater than or equal to the number of execution paths.
+
+we have function named expect which we can use in Jasmine or jest
+
+expect is an example of mature function
+
+If there is any problem, we can see the messages to troubleshoot. Sometimes the problem is in test, sometimes the problem is in production code.
+
+=====
+
+Tests are first class citizens in your source code. 
+
+they are as IMPORTANT as production code.
+
+====
+
+A function describe is available in jasmine and jest which is used for grouping bunch of related tests. 
+
+We can also function name test with it i.e.
+it(...)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
