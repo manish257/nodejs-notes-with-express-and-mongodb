@@ -1231,7 +1231,23 @@ A function describe is available in jasmine and jest which is used for grouping 
 We can also function name test with it i.e.
 it(...)
 
+======
 
+when we use toBe mature, this function compares references of these objects in the memort
+
+====
+
+checking test continually
+
+go to package.json and change test script to "jest --watchAll"
+
+it keeps on tracking test as just as running nodemon does instead of node
+
+=====
+
+checkout mockFunction from jest
+
+====
 
 
 
